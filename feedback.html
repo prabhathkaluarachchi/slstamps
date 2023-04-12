@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feedback</title>
+  <link rel="stylesheet" href="allpages.css" type="text/css">
+  <link rel="icon" type="image/x-icon" href="images/comment.png">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.min.js"></script>
+
+  <style>
+    .oops {
+      text-align: center;
+      color: rgb(69, 130, 133);
+      font-size: 30px;
+      margin: 5%;
+      margin-top: 10%;
+
+    }
+
+    .under {
+      text-align: center;
+      margin: 5%;
+
+    }
+
+    .under:hover {
+      transform: scale(1.1);
+      transition: all 0.5s ease-out;
+
+    }
+
+    img {
+      width: 300px;
+    }
+
+    /* Style for feedback form */
+    #feedback {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    #feedback h2 {
+      font-size: 28px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    #feedback label {
+      display: block;
+      margin-bottom: 5px;
+      text-align: justify;
+      /* Align label text to justify */
+    }
+
+    #feedback input[type="text"],
+    #feedback textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 2px solid #ccc;
+      border-radius: 5px;
+      text-align: justify;
+      /* Align input and textarea text to justify */
+    }
+
+    #feedback textarea {
+      height: 150px;
+    }
+
+    #feedback button[type="submit"] {
+      background-color: #0d6efd;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #feedback button[type="submit"]:hover {
+      background-color: #0c4f91;
+    }
+
+    /* CSS code for displaying previous feedbacks as a list */
+    .previous-feedbacks {
+      margin-top: 20px;
+    }
+
+    .previous-feedbacks h3 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .previous-feedbacks ul {
+      padding: 0;
+      list-style-type: none;
+    }
+
+    .previous-feedbacks li {
+      margin-bottom: 20px;
+      /* Add margin bottom for spacing between each feedback item */
+    }
+
+    .previous-feedbacks li strong {
+      font-weight: bold;
+      display: block;
+      /* Display the strong element as a block element to ensure proper spacing */
+    }
+
+    .previous-feedbacks li span {
+      display: block;
+      margin-top: 5px;
+      /* Add margin top for spacing between email and feedback text */
+      white-space: nowrap;
+      /* Prevent text from wrapping */
+      overflow: hidden;
+      /* Hide overflowing text */
+      text-overflow: ellipsis;
+      /* Add ellipsis (...) for truncated text */
+      font-size: 16px;
+      /* Reduce font size for improved readability */
+      color: #555;
+      /* Use a darker color for the feedback text */
+    }
+  </style>
+
+
+</head>
+
+<body>
+
+  <!-- Navebar -->
+  <nav>
+    <ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="catogeries.html">Catogeries</a></li>
+      <li><a href="aboutme.html">About Us</a></li>
+      <li><a href="contactus.html">Contact Us</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+    </ul>
+  </nav>
+
+
+
+  <div id="feedback">
+    <h2>Feedback</h2>
+    <form @submit.prevent="submitFeedback">
+      <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" v-model="name" required>
+      </div>
+      <div>
+        <label for="comment">Comment:</label>
+        <textarea id="comment" v-model="comment" required></textarea>
+      </div>
+      <button type="submit">Submit</button>
+    </form>
+    <div v-if="feedbackList.length > 0">
+      <h3>Previous Feedbacks</h3>
+      <ul>
+        <li v-for="feedback in feedbackList">{{ feedback.name }} - {{ feedback.comment }}</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <br> <br>
+
+
+
+  <!-- footer area -->
+  <footer>
+    <p>&copy; 2023 Coded & Designed By <b class="rainbow">Prabhath Kaluarachchi</b></p>
+  </footer>
+
+
+
+  <script>
+    new Vue({
+      el: '#feedback',
+      data: {
+        name: '',
+        comment: '',
+        feedbackList: []
+      },
+      methods: {
+        submitFeedback() {
+          // Create a new feedback object
+          const feedback = {
+            name: this.name,
+            comment: this.comment
+          };
+          // Add feedback to the feedback list
+          this.feedbackList.push(feedback);
+          // Clear form fields
+          this.name = '';
+          this.comment = '';
+          // Save feedback list to local storage
+          localStorage.setItem('feedbackList', JSON.stringify(this.feedbackList));
+        }
+      },
+      mounted() {
+        // Load feedback list from local storage
+        const savedFeedbackList = localStorage.getItem('feedbackList');
+        if (savedFeedbackList) {
+          this.feedbackList = JSON.parse(savedFeedbackList);
+        }
+      }
+    });
+
+
+  </script>
+
+
+</body>
+
+</html>
